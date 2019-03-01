@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}
+All topics
+{% endblock %}
+{% block stylesheet %}
+
+{% endblock %}
+{% block profile %}
+{% endblock %}
+{% block content %}
+<div class="container">
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if request.user.is_authenticated %}
+        {% if request.user.is_staff or request.user.is_superuser %}
+            <a href="{% url 'blog:createTopic' %}" class="btn btn-primary pull pull-right"> নতুন বিভাগ যোগ করুন</a>
+        {% endif %}
+    {% endif %}
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td>বিভাগ সমুহ</td>
+
+            {% if request.user.is_authenticated %}
+                {% if request.user.is_staff or request.user.is_superuser %}
+                    <td>Action</td>
+                {% endif %}
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for t in topic %}
+            <tr>
+                <td><a href="{% url 'blog:topic' name=t.name %}">{{ t.name }}</a></td>
+
+                {% if request.user.is_authenticated %}
+                    {% if request.user.is_staff or request.user.is_superuser %}
+                        <td><a href="">Delete</a>||<a href="">Edit</a></td>
+                    {% endif %}
+                {% endif %}
+            </tr>
+        {% endfor %}
+
+        </tbody>
+</table>
+    </div>
+{% endblock %}
+{% block script %}
+
+{% endblock %}

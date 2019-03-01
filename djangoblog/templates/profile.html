@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}
+    Author || {{ auth.name.get_full_name }}
+{% endblock %}
+{% block stylesheet %}
+<style type="text/css">
+		#fh5co-offcanvas {
+    width: auto;
+}
+#fh5co-offcanvas .fh5co-menu, #fh5co-offcanvas .fh5co-bio {
+    width: auto;
+    padding: 50px;
+}
+    </style>
+{% endblock %}
+{% block profile %}
+    <div class="fh5co-bio">
+			<figure>
+				<img src="{{ auth.profile_picture.url }}" alt="Free HTML5 Bootstrap Template" class="img-responsive">
+			</figure>
+			<h3 class="heading">About Me</h3>
+			<h2>{{ auth.name.get_full_name }}</h2>
+			<p>{{ auth.details }}</p>
+			<ul class="fh5co-social">
+				<li><a href="#"><i class="icon-twitter"></i></a></li>
+				<li><a href="#"><i class="icon-facebook"></i></a></li>
+				<li><a href="#"><i class="icon-instagram"></i></a></li>
+			</ul>
+		</div>
+{% endblock %}
+{% block content %}
+    <h1>Author: {{ auth.name.get_full_name }}</h1>
+    {% for p in post %}
+        <article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
+            <figure>
+                <a href="{% url 'blog:single_post' id=p.id %}"><img src="{{ p.image.url }}" alt="Image" class="img-responsive"></a>
+            </figure>
+            <span class="fh5co-meta"><a href="{% url 'blog:topic' name=p.category.name %}">{{ p.category }}</a></span>
+            <h2 class="fh5co-article-title"><a href="{% url 'blog:single_post' id=p.id %}">{{ p.title }}</a></h2>
+            <span class="fh5co-meta fh5co-date">{{ p.posted_on }}</span>
+        </article>
+    {% endfor %}
+
+{% endblock %}
+{% block script %}
+
+{% endblock %}

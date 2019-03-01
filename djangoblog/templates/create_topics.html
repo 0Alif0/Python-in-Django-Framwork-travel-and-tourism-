@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}
+
+{% endblock %}
+{% block stylesheet %}
+
+{% endblock %}
+{% block profile %}
+{% endblock %}
+{% block content %}
+<div class="container">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary">Create category</button>
+    </form>
+</div>
+{% endblock %}
+{% block script %}
+
+{% endblock %}

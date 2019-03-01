@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}
+{{ post.title }}
+{% endblock %}
+{% block stylesheet %}
+    <style>
+    div.single_comment p {
+    background: #eaeaea;
+    padding: 20px;
+}
+    </style>
+{% endblock %}
+{% block profile %}
+    <div class="fh5co-bio">
+			<figure>
+				<img src="{{ post.article_author.profile_picture.url }}" alt="Free HTML5 Bootstrap Template" class="img-responsive">
+			</figure>
+			<h3 class="heading">About Me</h3>
+			<h2>{{ post.article_author.name.get_full_name }}</h2>
+            <h4>{{ post.article_author.name.email }}</h4>
+			<p>{{ post.article_author.details }}</p>
+			<ul class="fh5co-social">
+				<li><a href="#"><i class="icon-twitter"></i></a></li>
+				<li><a href="#"><i class="icon-facebook"></i></a></li>
+				<li><a href="#"><i class="icon-instagram"></i></a></li>
+			</ul>
+		</div>
+{% endblock %}
+{% block content %}
+	{% if post.id > first.id %}
+	<a href="{% url 'blog:single_post' id=post.id|add:'-1' %}" class="fh5co-post-prev"><span><i class="icon-chevron-left"></i> Prev</span></a>
+	{% endif %}
+	{% if post.id < last.id %}
+        <a href="{% url 'blog:single_post' id=post.id|add:'1' %}" class="fh5co-post-next"><span>Next <i class="icon-chevron-right"></i></span></a>
+
+	{% endif %}
+	<!-- END #fh5co-header -->
+	<div class="container-fluid">
+		<div class="row fh5co-post-entry single-entry">
+			<article class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
+				<figure class="animate-box">
+					<img src="{{ post.image.url }}" alt="Image" class="img-responsive">
+				</figure>
+				<span class="fh5co-meta animate-box"><a href="{% url 'blog:topic' name=post.category.name %}">{{ post.category.name }}</a></span>
+				<h2 class="fh5co-article-title animate-box">{{ post.title }}</h2>
+				<span class="fh5co-meta fh5co-date animate-box">{{ post.posted_on }}</span>
+				
+				<div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
+					<div class="row">
+						<div class="col-lg-12 cp-r animate-box">
+                            <p>{{ post.body }}</p>
+						</div>
+
+					</div>
+
+				</div>
+			</article>
+		</div>
+        <div class="container">
+            <h3 class="well">Related article</h3>
+            <div class="row">
+                {% for r in related %}
+                    <div class="col-md-3">
+                        <figure class="animate-box">
+                            <a href="{% url 'blog:single_post' id=r.id %}"><img src="{{ r.image.url }}" alt="Image" class="img-responsive"></a>
+                            <a href="{% url 'blog:single_post' id=r.id %}"><h2 class="fh5co-article-title animate-box">{{ r.title }}</h2></a>
+                            <p>{{ r.body|truncatewords:15 }}</p>
+                        </figure>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    <div class="container">
+    <h3 class="well">Comments</h3>
+    <div class="single_post_comment">
+        {% for comment in comment %}
+            <div class="single_comment">
+                <h4><img src="http://icons.iconarchive.com/icons/icons8/ios7/512/Users-User-Male-2-icon.png" alt="" style="height: 27px;margin-right: 10px;">{{ comment.name }}</h4>
+                <p>{{ comment.post_comment }}</p>
+            </div>
+            {% empty %}
+            <h3>Sorry no comment found</h3>
+        {% endfor %}
+
+    </div>
+
+        <div class="panel panel-success">
+          <div class="panel-heading">
+            <h3 class="panel-title">Comment</h3>
+          </div>
+          <div class="panel-body">
+              <form action="" method="POST">
+                  {% csrf_token %}
+                  {{ form.as_p }}
+                  <button class="btn btn-primary">Comment</button>
+              </form>
+          </div>
+        </div>
+    </div>
+	</div>
+{% endblock %}
+{% block script %}
+
+{% endblock %}
